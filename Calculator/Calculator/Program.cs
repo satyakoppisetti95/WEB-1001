@@ -1,68 +1,10 @@
 ﻿using System;
 using System.Linq;
+using CalculatorLibrary;
 
-namespace Calculator
+namespace CalculatorProgram
 {
-    //class created to seperate the calculator functionality from UI functionality
-    //calculator functionality is defined in below class Calculator
-    class Calculator
-    {
-
-        //function that takes two operands (double) and a string for operator code
-        public static double performCalculation(double first,double second,string option)
-        {
-            // intialising result to Nan
-            double result = Double.NaN;
-
-            //switch
-            switch (option)
-            {
-                case "a":
-                    // perform addition
-                    result = first + second;
-                    break;
-                case "s":
-                    //perform subtraction
-                    result = first - second;
-                    break;
-                case "m":
-                    //perform multiplication
-                    result = first * second;
-                    break;
-                case "d":
-                    //check for division by zero error
-                    if(second != 0)
-                    {
-                        //perform division
-                        result = first / second;
-                    }
-                    break;
-                default:
-                    //return default 
-                    break;    
-            }
-
-            return result;
-        }
-
-
-        // function to check if a double entered is valid
-        public static bool isValidDouble(double val)
-        {
-            return !Double.IsNaN(val) && !Double.IsInfinity(val);
-        }
-
-        // funtion to print operator codes
-        public static void printOptions()
-        {
-            Console.WriteLine("===========================================");
-            Console.WriteLine("Please enter one of the following options :");
-            Console.WriteLine("Enter 'a' for addition");
-            Console.WriteLine("Enter 's' for subtraction");
-            Console.WriteLine("Enter 'm' for multiplication");
-            Console.WriteLine("Enter 'd' for division");
-        }
-    }
+    
 
     // main class
     //the following class handles the UI functionality
@@ -70,6 +12,10 @@ namespace Calculator
     {
         static void Main(string[] args)
         {
+
+            //initialising calculator object
+            Calculator calculator = new Calculator();
+
             // we declare a boolen for while loop.
             // At the end of calculation we ask user for more inputs or close application
             // if the user wishes to close application. endLoop witll be set to true and while loop will break
@@ -95,7 +41,7 @@ namespace Calculator
                 string [] operators = { "a", "s", "m", "d" };
 
                 //looping through, till the user enters a valid operand
-                while (!Calculator.isValidDouble(operand_1)){
+                while (!calculator.isValidDouble(operand_1)){
                     Console.Write("Type a valid first operand, and then press Enter: ");
                     try
                     {
@@ -108,7 +54,7 @@ namespace Calculator
                 }
 
                 //looping through, till the user enters a valid operand
-                while (!Calculator.isValidDouble(operand_2))
+                while (!calculator.isValidDouble(operand_2))
                 {
                     Console.Write("Type a valid second operand, and then press Enter: ");
                     try
@@ -124,17 +70,18 @@ namespace Calculator
                 //looping thorugh till the user enters a valid operator code
                 while (!operators.Contains(op))
                 {
-                    Calculator.printOptions();
+                    calculator.printOptions();
                     Console.Write("Type the code for operator from options shown above, and then press Enter: ");
                     op = Console.ReadLine();
                 }
 
                 //performing calcualtion
-                double result = Calculator.performCalculation(operand_1, operand_2, op);
+                double result = calculator.performCalculation(operand_1, operand_2, op);
 
-                //checking if result is not null and printing
+                //checking if result is not null and printing results
                 if (Double.IsNaN(result))
                 {
+                    Console.WriteLine("======================================");
                     Console.WriteLine("Oops! Looks like there is a mathematical error. Please enter valid numbers for choosen operation");
                 }
                 else
@@ -150,6 +97,9 @@ namespace Calculator
 
 
             }
+
+            calculator.Finish();
+            return;
         }
     }
 }
